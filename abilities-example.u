@@ -1,0 +1,32 @@
+-- effectfulPredicate.stopIfTrue takes in a value, tests it against some condition, and does not permit subsequent functions to continue if the condition returns true
+-- The computational effect here is "hey, potentially stop running the program." 
+-- In other languages with different effect management strategies, 
+-- you might model this by throwing an exception or returning the "missing" case of a data type 
+-- representing "something or nothing."
+
+-- "stopIfTrue is a function which performs the Abort effect"
+-- Abort is what we call an ability in Unison and we say that the function
+-- effectfulPredicate.stopIfTrue "requires the Abort ability" 
+-- or effectfulPredicate.stopIfTrue has an "Abort ability requirement"
+
+-- Abourt's type signature is:
+-- structural ability Abort where
+--   lib.base.abilities.Abort.abort : {Abort} a
+
+
+effectfulPredicate.stopIfTrue : (a ->{g} Boolean) -> a ->{g, Abort} a
+effectfulPredicate.stopIfTrue predicate a =
+  if predicate a then abort else a
+
+-- nonEmptyName : Text -> {} Text
+-- nonEmptyName name =
+--   stopIfTrue (text -> text === "") name
+
+usingAbilitiesPt1.nonEmptyName : Text -> Text
+usingAbilitiesPt1.nonEmptyName name =
+  optionalName : Optional Text
+  optionalName = 
+    --   toOptional! : '{g, Abort} a ->{g} Optional a
+    toOptional! '(effectfulPredicate.stopIfTrue
+        (text -> text === "") name)
+  Optional.getOrElse "Unknown Name" optionalName

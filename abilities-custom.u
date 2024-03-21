@@ -1,0 +1,24 @@
+
+ability SystemTime where
+  -- Number of seconds since the start of 1970.
+  systemTime : Nat
+
+-- THIS IS EFFECT HANDLER
+-- which converts our original printTomorrow function into one which doesn't require the SystemTime ability.
+-- 결론 : "handle some_function with some_handler" 구문을 사용하면 some_function의 ability를 명시적으로 표기할 필요가 없다
+systemTimeToIO : Request SystemTime a -> {IO} a
+systemTimeToIO r =
+  case r of
+    { SystemTime.systemTime -> k } ->
+      let epochTimeToNat e = case e of EpochTime.EpochTime n -> n
+          -- call through to .builtin.io.systemTime
+          handle k (epochTimeToNat !systemTime) with systemTimeToIO
+    { a } -> a
+
+tomorrow = '(SystemTime.systemTime + 24 * 60 * 60)
+
+-- printTomorrow : '{IO, SystemTime, Exception} ()
+-- printTomorrow = '(printLine (Nat.toText !tomorrow))
+
+printTomorrow' : '{IO} ()
+printTomorrow' = '(handle !printTomorrow with systemTimeToIO)

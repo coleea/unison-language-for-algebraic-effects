@@ -1,3 +1,10 @@
+add
+add main
+main
+run printTomorrow 
+run printTomorrow 
+add
+add tomorrow
 run effectfulPredicate.stopIfTrue true
 add
 run myMain "ssss"

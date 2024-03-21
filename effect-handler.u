@@ -1,0 +1,8 @@
+-- systemTimeToIO : Request SystemTime a -> {IO} a
+-- systemTimeToIO r =
+--   case r of
+--     { SystemTime.systemTime -> k } ->
+--       let epochTimeToNat e = case e of EpochTime.EpochTime n -> n
+--           -- call through to .builtin.io.systemTime
+--           handle k (epochTimeToNat !systemTime) with systemTimeToIO
+--     { a } -> a
