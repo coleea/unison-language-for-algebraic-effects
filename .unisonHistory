@@ -1,0 +1,29 @@
+run effectfulPredicate.stopIfTrue true
+add
+run myMain "ssss"
+run myMain s
+run myMain a b
+add
+run myMain a b c
+add myMain
+x`
+ls
+ls
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+quit
+uit
+?
+projects
+p
+:q
+code .
+:q
+?
+2
+projects
+run myMain a b c

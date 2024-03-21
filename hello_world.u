@@ -1,0 +1,7 @@
+myMain : '{IO, Exception} ()
+myMain _ =
+  use Text ++
+  args : [Text]
+  args = !getArgs
+  printLine ("Hello " ++ lib.base.Text.join " " args)
+
